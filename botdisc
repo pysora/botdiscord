@@ -1,0 +1,129 @@
+import discord, random, datetime, shutil
+from discord.ext import commands
+from google_images_download import google_images_download
+
+date = datetime.datetime.now()
+bot = commands.Bot(command_prefix="¥")
+usuario = " "
+
+@bot.event
+async def on_ready():
+    await bot.change_presence(status=discord.Status.online, activity=discord.Game("alguém me salva"))
+    print("Bot is ready.")
+
+
+@bot.command()
+async def ping(ctx):
+    await ctx.send(f"Ping {round(bot.latency * 1000)}ms")
+
+@bot.command()
+async def fala(message):
+    await message.channel.send("que é mano me deixa em paz")
+
+@bot.command()
+async def como_vai(ctx):
+    await ctx.send("mano eu vo cuidar do meu anão que é melhor")
+
+@bot.command()
+async def data_hoje(ctx):
+    await ctx.send(date.strftime("%c"))
+
+
+@bot.command()
+async def comandos(ctx):
+
+    embed = discord.Embed(
+        title="Comandos",
+        description="Lista dos comandos disponíveis até o momento.",
+        colour=discord.Colour.dark_blue()
+    )
+
+    embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/334037046156853249/738501052139044884/4f3c1dd048162d6e6996e4901f8215a9.jpg")
+    embed.add_field(name="fala", value="descoble tloxa")
+    embed.add_field(name="como_vai", value="descoble tloxa")
+    embed.add_field(name="data_hoje", value="descoble tloxa")
+    embed.add_field(name="ping", value="esse aqui é bem dificil de descobli ne ")
+    embed.add_field(name="procura", value="procula os negócio (não use palavras compostas, símbolos ou acentos)")
+    embed.set_footer(text="cuidado com um tal de kall")
+
+    await ctx.send(embed=embed)
+
+
+@bot.command()
+async def procura(ctx, qqcequer):
+
+    embed = discord.Embed(
+        title="Ela isso que você quelia?",
+        colour=discord.Colour.dark_blue()
+    )
+
+    response = google_images_download.googleimagesdownload()
+    arguments = {"keywords": qqcequer,
+                 "limit": 1,
+                 "save_source":"url"
+                 }
+
+    paths = response.download(arguments)
+
+    #tentar isso aqui com o source_save só com image_url
+    with open("C:/Users/joaop/PycharmProjects/botdisc/bot/downloads/url.txt",'r') as urls:
+        for each in urls:
+            defurl = each[0:]
+
+    embed.set_image(url=defurl)
+
+    await ctx.send(embed=embed)
+
+    shutil.rmtree("C:/Users/joaop/PycharmProjects/botdisc/bot/downloads")
+
+
+@bot.command()
+async def bullying(ctx, user):
+
+    user == usuario
+
+    await ctx.send(f"{user} selá bulinad(a) agola hehe")
+
+    return
+
+
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        await ctx.send("esse comando não existe mongol")
+
+
+@bot.event
+async def on_message(message):
+
+    if str(message.author) == usuario:
+        respostas = [
+            "pelo amol de deus pala de falal",
+            "calalho mano só pala",
+            "ah cala eu não aguento mais",
+            "puta que paliu muleque dos infelno",
+            "que cala insupoltavel pulta melda",
+            "eu vo sulta com esse muleque aqui",
+            "eu vo sulta.",
+            "alguem tila esse melda daqui calalho",
+            "AAAAAAAAAAAAAAAAAAAAAAA FILHO DA PULTAAAAA",
+            "eu vo te apagal na polada seu meldinha",
+            "fala mais um a pla você ve",
+            "alguem me mata lapido eu nao supolto mais esse bosta",
+            "NÃO PALA DE FALA É INCLIVEL",
+            "pulta melda você se supelou agola",
+            "já deu pla mim.",
+            "você vai paga minha telapia esteje avisado",
+            "eu desisto pla mim já deu",
+            "quem botou essa pola aqui?",
+            "começou a putalia"
+        ]
+
+        random.shuffle(respostas)
+
+        await message.channel.send(random.choice(respostas), tts=True)
+
+    await bot.process_commands(message)
+
+
+bot.run("NzM3Mzc2NDEwODcxNzkxNjY3.Xx8dTA.OsazTrWkHOhgiioBoJ1QOUAzI6I")
